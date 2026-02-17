@@ -45,7 +45,7 @@ public class List {
         Node current = first;
 
         while (current != null) {
-            result += current.cp;
+            result += current.cp + "\n";
             current = current.next;
         }
         return result;
@@ -173,3 +173,4 @@ public class List {
 	    return new ListIterator(current);
     }
 }
+
