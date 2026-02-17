@@ -45,7 +45,10 @@ public class List {
         Node current = first;
 
         while (current != null) {
-            result += current.cp + " ";
+            result += current.cp;
+            if (current.next != null) {
+                result += " ";
+            }
             current = current.next;
         }
         return result + ")";
