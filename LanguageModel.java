@@ -123,8 +123,9 @@ public class LanguageModel {
 
         // Otherwise, start the generation (starting with what we were given, initialText)
         String result = initialText;
+        int targetLength = initialText.length() + textLength;
 
-        while (result.length() < textLength) {
+        while (result.length() < targetLength) {
         // Start with the correct window length
         String currentWindow = result.substring(result.length() - windowLength);
 
