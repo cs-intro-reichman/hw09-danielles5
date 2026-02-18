@@ -33,7 +33,47 @@ public class LanguageModel {
 
     /** Builds a language model from the text in the given file (the corpus). */
 	public void train(String fileName) {
-		// Your code goes here
+		String window = "";
+        char c;
+        In in = new In(fileName);
+
+        // Reads just enough characters to form the first window
+        for (int i = 0; i < windowLength; i++) {
+            char nextChar = in.readChar();
+            window += nextChar;
+        }
+
+        // Processes the entire text, one character at a time
+        while (!in.isEmpty()) {
+
+        // Reads the next character (after the window)
+        c = in.readChar();
+
+        // Checks if the window is already in the map
+        // code: tries to get the list of this window from the map.
+        // Let’s call the retrieved list “probs” (it may be null)
+        List probs = CharDataMap.get(window);
+
+        // If the window was not found in the map
+        // Creates a new empty list, and adds (window,list) to the map
+        if (probs == null) {
+            List newWinList = new List();
+            CharDataMap.put(window, newWinList);
+            probs = newWinList;
+        }   
+
+        // Calculates the counts of the current character.
+        probs.update(c);
+
+        // Advances the window: adds c to the window’s end, and deletes the
+        // window's first character.
+        window = window.substring(1) + c;
+    }
+        // The entire file has been processed, and all the characters have been counted.
+        // Proceeds to compute and set the p and cp fields of all the CharData objects
+        // in each linked list in the map.
+        for (List probs : CharDataMap.values())
+        calculateProbabilities(probs);
 	}
 
     // Computes and sets the probabilities (p and cp fields) of all the
@@ -65,7 +105,6 @@ public class LanguageModel {
                 return arr[i].chr;
             }
         }
-
 		return ' ';
 	}
 
